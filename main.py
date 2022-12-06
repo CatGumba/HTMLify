@@ -1,4 +1,5 @@
 from os.path import exists
+import re
 
 path = input('File: ')
 if not path.endswith('.txt'):
@@ -22,6 +23,18 @@ def htmlify():
     if exists(path):
         with open(path) as f:
             for line in f:
+                result = re.search('{(.*)}', line)
+                link = ''
+                if not result == None:
+                    link = result.group(1)
+                    linkarray = link.split(',')
+                    print(linkarray)
+                    try:
+                        linkarray[2]
+                        line = line.replace('{'+link+'}',f'<a href={linkarray[0]} target="_blank">{linkarray[1]}</a>')
+                    except:   
+                        line = line.replace('{'+link+'}',f'<a href={linkarray[0]}>{linkarray[1]}</a>')
+                    
                 line = line.replace('\n', '')
 
                 if line.startswith('-'):
